@@ -1,0 +1,25 @@
+{
+  "tests": [
+    {
+      "name": "Create enrollment",
+      "method": "POST",
+      "body": {
+        "studentName": "Иван Иванов",
+        "studentAge": 12,
+        "parentName": "Сергей Иванов",
+        "email": "test@example.com",
+        "phone": "+79991234567",
+        "course": "Python Основы",
+        "startDate": "2024-12-01",
+        "experience": "beginner",
+        "comment": "Хотим начать обучение"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": true,
+        "enrollment": "object"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

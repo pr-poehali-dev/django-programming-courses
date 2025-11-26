@@ -1,0 +1,46 @@
+{
+  "tests": [
+    {
+      "name": "Get API status",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "message": "string",
+        "version": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get courses list",
+      "method": "GET",
+      "path": "/courses",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "courses": "array"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create enrollment",
+      "method": "POST",
+      "path": "/enroll",
+      "body": {
+        "studentName": "Иван Иванов",
+        "studentAge": "12",
+        "parentName": "Сергей Иванов",
+        "email": "test@example.com",
+        "phone": "+79991234567",
+        "course": "Python Основы",
+        "startDate": "2024-12-01",
+        "experience": "beginner"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": true,
+        "enrollment": "object"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

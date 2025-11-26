@@ -11,9 +11,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { EnrollmentDialog } from '@/components/EnrollmentDialog';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('home');
+  const [enrollmentOpen, setEnrollmentOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<{ title: string; id: number } | null>(null);
+
+  const handleEnrollClick = (courseTitle: string, courseId: number) => {
+    setSelectedCourse({ title: courseTitle, id: courseId });
+    setEnrollmentOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,13 +47,20 @@ const Index = () => {
         </div>
       </header>
 
-      {activeTab === 'home' && <HomeSection setActiveTab={setActiveTab} />}
-      {activeTab === 'courses' && <CoursesSection />}
+      {activeTab === 'home' && <HomeSection setActiveTab={setActiveTab} onEnrollClick={handleEnrollClick} />}
+      {activeTab === 'courses' && <CoursesSection onEnrollClick={handleEnrollClick} />}
       {activeTab === 'teachers' && <TeachersSection />}
-      {activeTab === 'pricing' && <PricingSection />}
+      {activeTab === 'pricing' && <PricingSection onEnrollClick={handleEnrollClick} />}
       {activeTab === 'reviews' && <ReviewsSection />}
       {activeTab === 'faq' && <FAQSection />}
       {activeTab === 'dashboard' && <DashboardSection />}
+
+      <EnrollmentDialog 
+        open={enrollmentOpen} 
+        onOpenChange={setEnrollmentOpen}
+        courseTitle={selectedCourse?.title}
+        courseId={selectedCourse?.id}
+      />
 
       <footer className="bg-slate-900 text-white py-12 mt-20">
         <div className="container">
@@ -86,7 +101,7 @@ const Index = () => {
   );
 };
 
-const HomeSection = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) => {
+const HomeSection = ({ setActiveTab, onEnrollClick }: { setActiveTab: (tab: string) => void; onEnrollClick: (title: string, id: number) => void }) => {
   return (
     <>
       <section className="relative overflow-hidden bg-gradient-purple py-20 md:py-32">
@@ -104,10 +119,10 @@ const HomeSection = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
                 Все современные профессии требуют навыков программирования и чем раньше ребенок познакомится с информационными технологиями, тем проще ему будет поступить в ВУЗ на престижную IT специальность и найти высокооплачиваемую работу.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white text-lg px-8 py-6">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white text-lg px-8 py-6" onClick={() => onEnrollClick('Python Основы', 1)}>
                   Записаться на курс
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6" onClick={() => setActiveTab('courses')}>
                   Узнать больше
                 </Button>
               </div>
@@ -186,9 +201,10 @@ const HomeSection = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
   );
 };
 
-const CoursesSection = () => {
+const CoursesSection = ({ onEnrollClick }: { onEnrollClick: (title: string, id: number) => void }) => {
   const courses = [
     { 
+      id: 1,
       title: 'Python Основы', 
       description: 'Изучите основы Python: переменные, циклы, функции, работа с файлами',
       level: 'Начальный',
@@ -199,6 +215,7 @@ const CoursesSection = () => {
       color: 'bg-blue-500'
     },
     { 
+      id: 2,
       title: 'Django Framework', 
       description: 'Создание веб-приложений на Django: модели, представления, шаблоны, REST API',
       level: 'Средний',
@@ -209,6 +226,7 @@ const CoursesSection = () => {
       color: 'bg-purple-500'
     },
     { 
+      id: 3,
       title: 'Full-Stack разработка', 
       description: 'Комплексная программа: Backend на Django + Frontend на React',
       level: 'Продвинутый',
@@ -219,6 +237,7 @@ const CoursesSection = () => {
       color: 'bg-indigo-500'
     },
     { 
+      id: 4,
       title: 'Машинное обучение', 
       description: 'Основы ML и Data Science: numpy, pandas, scikit-learn, нейронные сети',
       level: 'Продвинутый',
@@ -229,6 +248,7 @@ const CoursesSection = () => {
       color: 'bg-pink-500'
     },
     { 
+      id: 5,
       title: 'Python для детей', 
       description: 'Игровое программирование: создание игр на Pygame, основы алгоритмов',
       level: 'Начальный',
@@ -239,6 +259,7 @@ const CoursesSection = () => {
       color: 'bg-green-500'
     },
     { 
+      id: 6,
       title: 'Боты и автоматизация', 
       description: 'Создание Telegram ботов, парсинг данных, автоматизация задач',
       level: 'Средний',
@@ -285,7 +306,7 @@ const CoursesSection = () => {
                 
                 <div className="flex items-center justify-between pt-4 border-t">
                   <div className="text-2xl font-bold text-primary">{course.price}</div>
-                  <Button className="bg-gradient-purple">Записаться</Button>
+                  <Button className="bg-gradient-purple" onClick={() => onEnrollClick(course.title, course.id)}>Записаться</Button>
                 </div>
               </div>
             </Card>
@@ -337,7 +358,7 @@ const TeachersSection = () => {
   );
 };
 
-const PricingSection = () => {
+const PricingSection = ({ onEnrollClick }: { onEnrollClick: (title: string, id: number) => void }) => {
   const plans = [
     { 
       name: 'Базовый', 
@@ -389,7 +410,7 @@ const PricingSection = () => {
                   </li>
                 ))}
               </ul>
-              <Button className={`w-full ${plan.popular ? 'bg-gradient-purple' : ''}`}>
+              <Button className={`w-full ${plan.popular ? 'bg-gradient-purple' : ''}`} onClick={() => onEnrollClick('Python Основы', 1)}>
                 Выбрать план
               </Button>
             </Card>

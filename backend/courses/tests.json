@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Get courses list",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "courses": "array"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
